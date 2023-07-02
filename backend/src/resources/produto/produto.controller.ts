@@ -4,6 +4,7 @@ import {
   createProduto,
   getProduto,
   updateProduto,
+  removeProduto,
 } from './produto.services';
 import { CreateProdutoDto } from './produto.types';
 
@@ -47,6 +48,16 @@ const update = async (req: Request, res: Response) => {
     res.status(500).json(e);
   }
 };
-const remove = async (req: Request, res: Response) => {};
+const remove = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const result = await removeProduto(id);
+    if (result === 0)
+      return res.status(400).json({ msg: 'Produto não existe' });
+    else res.status(200).json({ msg: 'Produto removido' });
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};
 
 export default { index, create, read, update, remove };

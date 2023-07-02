@@ -25,3 +25,7 @@ export const updateProduto = async (
   const [affectedCount] = await Produto.update(produto, { where: { id } });
   return affectedCount;
 };
+
+export const removeProduto = async (id: string): Promise<number> => {
+  return await Produto.destroy({ where: { id } });
+};
