@@ -3,7 +3,16 @@ import { CreateUsuarioDto, UpdateUsuarioDto } from './usuario.types';
 import bcrypt from 'bcryptjs';
 
 export const getAllUsuarios = async (): Promise<Usuario[]> => {
-  const usuarios = await Usuario.findAll();
+  const usuarios = await Usuario.findAll({
+    attributes: [
+      'id',
+      'tipoUsuarioId',
+      'nome',
+      'email',
+      'createdAt',
+      'updatedAt',
+    ],
+  });
   return usuarios.map((p) => p.toJSON());
 };
 
@@ -23,7 +32,17 @@ export const createUsuario = async (
 };
 
 export const getUsuario = async (id: string): Promise<Usuario | null> => {
-  return await Usuario.findOne({ where: { id } });
+  return await Usuario.findOne({
+    attributes: [
+      'id',
+      'tipoUsuarioId',
+      'nome',
+      'email',
+      'createdAt',
+      'updatedAt',
+    ],
+    where: { id },
+  });
 };
 
 export const updateUsuario = async (
