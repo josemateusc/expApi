@@ -4,9 +4,9 @@ import { listTiposUsuarios } from './tipoUsuario.service';
 const index = async (req: Request, res: Response) => {
   try {
     const tipos = await listTiposUsuarios();
-    res.send(200).json(tipos);
+    res.status(200).json(tipos);
   } catch (e) {
-    res.send(500).json(e);
+    res.status(500).json(e);
   }
 };
 
