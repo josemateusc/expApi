@@ -5,7 +5,8 @@ import {
 } from '../usuario/usuario.services';
 
 import { tiposUsuarios } from '../tipoUsuario/tipoUsuario.constants';
-import { checkCredentials } from './auth.service';
+import { checkCredentials, checkIsAdmin } from './auth.service';
+import checkAdmin from '../../middlewares/checkAdmin';
 
 const signup = async (req: Request, res: Response) => {
   const { nome, email, senha } = req.body;
@@ -37,7 +38,11 @@ const login = async (req: Request, res: Response) => {
         .json({ msg: 'A senha e/ou email estão incorretos' });
     req.session.uid = usuario.id;
     req.session.tipoUsuarioId = usuario.tipoUsuarioId;
-    res.status(200).json({ msg: 'Usuário logou com sucesso' });
+
+    res.status(200).json({
+      isAdmin: await checkIsAdmin(usuario.id),
+      msg: 'Usuário logou com sucesso',
+    });
   } catch (e) {
     res.status(500).json(e);
   }
